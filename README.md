@@ -1,5 +1,5 @@
 # Epic Store
-Alternative to ViewModelStore
+Android library for storing objects. Can be alternative to ViewModelStore.
 
 ### Add the JitPack repository to your root build file
 
