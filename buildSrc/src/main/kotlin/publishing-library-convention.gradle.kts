@@ -12,7 +12,7 @@ android {
 publishing {
     publications {
         register<MavenPublication>("release") {
-            groupId = Constants.EPIC_STORE_GROUP_ID
+            groupId = Constants.EPICARCHITECT_GROUP_NAME
             artifactId = project.name
             version = Constants.EPIC_STORE_VERSION
             afterEvaluate {

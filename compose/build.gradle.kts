@@ -8,6 +8,6 @@ android {
 }
 
 dependencies {
-    api(project(":epic-store"))
+    api(project(":core"))
     api("androidx.compose.foundation:foundation:1.2.1")
 }
