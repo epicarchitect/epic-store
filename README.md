@@ -16,7 +16,7 @@ allprojects {
 ```Kotlin
 dependencies {
     implementation("com.github.epicarchitect.epic-store:core:1.0.2")
-    implementation("com.github.epicarchitect.epic-store:compose:1.0.2")
-    implementation("com.github.epicarchitect.epic-store:google-navigation-compose:1.0.2")
+    implementation("com.github.epicarchitect.epic-store:compose:1.0.2") // contains core module
+    implementation("com.github.epicarchitect.epic-store:google-navigation-compose:1.0.2") // contains compose and core module
 }
 ```
