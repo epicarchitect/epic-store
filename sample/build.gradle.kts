@@ -44,7 +44,8 @@ android {
 }
 
 dependencies {
-    implementation(project(":epic-store-navigation-compose"))
+//    implementation(project(":epic-store-navigation-compose"))
+//    implementation("io.github.epicarchitect:epic-store-compose:1.0.0")
     implementation("androidx.core:core-ktx:1.8.0")
     implementation("androidx.activity:activity-compose:1.5.1")
     implementation("androidx.compose.material:material:1.2.1")
