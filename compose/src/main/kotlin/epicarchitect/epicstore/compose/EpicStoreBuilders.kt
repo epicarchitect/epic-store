@@ -28,17 +28,12 @@ fun EpicStore(
     clearWhen: () -> Boolean = { false },
     doBeforeClear: (key: Any?, value: Any?) -> Unit = { _, _ -> },
     doAfterClear: () -> Unit = { },
-    autoDestroy: Boolean = true,
     content: @Composable () -> Unit
 ) {
-    if (autoDestroy) {
-        val epicStore = LocalEpicStore.current
-        LaunchedEffect(clearWhen()) {
-            epicStore.clearIfNeeded()
-        }
+    val epicStore = LocalEpicStore.current
+    LaunchedEffect(clearWhen()) {
+        epicStore.clearIfNeeded()
     }
-
-    rememberCoroutineScope()
 
     CompositionLocalProvider(
         LocalEpicStore provides rememberEpicStoreEntry(key, ::EpicStore).apply {
