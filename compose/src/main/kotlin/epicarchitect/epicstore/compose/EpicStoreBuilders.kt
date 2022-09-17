@@ -4,15 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisallowComposableCalls
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import epicarchitect.epicstore.EpicStore
 import epicarchitect.epicstore.getOrSet
 import java.util.*
-import kotlin.properties.ReadOnlyProperty
-import kotlin.reflect.KProperty
 
 @Composable
 fun RootEpicStore(content: @Composable () -> Unit) {
@@ -36,7 +32,7 @@ fun EpicStore(
     }
 
     CompositionLocalProvider(
-        LocalEpicStore provides rememberEpicStoreEntry(key, ::EpicStore).apply {
+        LocalEpicStore provides rememberEpicStoreEntry(keys = emptyArray(), key, ::EpicStore).apply {
             this.isClearNeeded = clearWhen
             this.doBeforeClear = doBeforeClear
             this.doAfterClear = doAfterClear
@@ -47,9 +43,10 @@ fun EpicStore(
 
 @Composable
 inline fun <reified T> rememberEpicStoreEntry(
-    key: Any = rememberSaveable(init = UUID::randomUUID),
+    vararg keys: Any? = emptyArray(),
+    epicStoreKey: Any = rememberSaveable(init = UUID::randomUUID),
     noinline entry: @DisallowComposableCalls () -> T,
 ): T {
     val epicStore = LocalEpicStore.current
-    return remember { epicStore.getOrSet(key, entry) }
+    return remember(keys) { epicStore.getOrSet(epicStoreKey, entry) }
 }
