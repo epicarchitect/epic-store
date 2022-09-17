@@ -8,7 +8,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import epicarchitect.epicstore.compose.RootEpicStore
-import epicarchitect.epicstore.sample.screen.RootScreen
+import epicarchitect.epicstore.sample.ui.RootScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

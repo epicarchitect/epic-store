@@ -6,25 +6,28 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class TodoCreationFeature(
+class TodoUpdatingFeature(
     private val coroutineScope: CoroutineScope,
     private val todoRepository: TodoRepository
 ) {
 
-    private val mutableState = MutableStateFlow<State>(State.Ready())
+    private val mutableState = MutableStateFlow<State>(
+        State.Ready(update = ::update)
+    )
 
     val state = mutableState.asStateFlow()
 
-    fun create(title: String, content: String) {
+    private fun update(id: Int, title: String, content: String) {
         coroutineScope.launch {
             mutableState.update {
                 State.InProcess(
+                    id = id,
                     title = title,
                     content = content
                 )
             }
 
-            todoRepository.create(title, content)
+            todoRepository.update(id, title, content)
 
             mutableState.update {
                 State.Finished()
@@ -33,9 +36,12 @@ class TodoCreationFeature(
     }
 
     sealed class State {
-        class Ready : State()
+        data class Ready(
+            val update: (id: Int, title: String, content: String) -> Unit
+        ) : State()
 
         data class InProcess(
+            val id: Int,
             val title: String,
             val content: String
         ) : State()

@@ -9,10 +9,9 @@ class TodoToggleCompletionFeature(
     private val todoId: Int
 ) {
 
-    fun toggle() {
+    fun toggleCompletion() {
         coroutineScope.launch {
             todoRepository.toggleCompletion(todoId)
         }
     }
-
 }

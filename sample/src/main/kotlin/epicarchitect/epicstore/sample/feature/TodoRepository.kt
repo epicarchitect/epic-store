@@ -5,14 +5,20 @@ import kotlinx.coroutines.flow.Flow
 
 interface TodoRepository {
 
-    suspend fun insert(todo: Todo)
+    suspend fun create(title: String, content: String)
+
+    suspend fun update(id: Int, title: String, content: String)
 
     suspend fun delete(id: Int)
 
     suspend fun toggleCompletion(id: Int)
 
-    fun todoListFlow(): Flow<List<Todo>>
+    suspend fun getTodo(id: Int): Todo
 
-    fun generateId() = (0..100000).random()
+    fun todoFlow(id: Int): Flow<Todo?>
+
+    fun todoIdsFlow(): Flow<List<Int>>
+
+    suspend fun isTodoTitleUsed(title: String): Boolean
 
 }
