@@ -4,11 +4,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisallowComposableCalls
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import epicarchitect.epicstore.EpicStore
 import epicarchitect.epicstore.getOrSet
 import java.util.*
+import kotlin.properties.ReadOnlyProperty
+import kotlin.reflect.KProperty
 
 @Composable
 fun RootEpicStore(content: @Composable () -> Unit) {
@@ -33,6 +37,8 @@ fun EpicStore(
             epicStore.clearIfNeeded()
         }
     }
+
+    rememberCoroutineScope()
 
     CompositionLocalProvider(
         LocalEpicStore provides rememberEpicStoreEntry(key, ::EpicStore).apply {

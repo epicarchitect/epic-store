@@ -1,6 +1,7 @@
 plugins {
     id("app-convention")
     id("compose-convention")
+    id("kotlin-kapt")
 }
 
 android {
@@ -9,7 +10,7 @@ android {
     defaultConfig {
         applicationId = "epicarchitect.epicstore.sample"
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.0.0"
     }
 
     signingConfigs {
@@ -45,10 +46,10 @@ android {
 
 dependencies {
     implementation(project(":google-navigation-compose"))
-//    implementation("com.github.epicarchitect.epic-store:core:1.0.3")
-//    implementation("com.github.epicarchitect.epic-store:compose:1.0.3")
-//    implementation("com.github.epicarchitect.epic-store:google-navigation-compose:1.0.3")
-    implementation("androidx.core:core-ktx:1.8.0")
+    implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.activity:activity-compose:1.5.1")
     implementation("androidx.compose.material:material:1.2.1")
+    implementation("androidx.room:room-runtime:2.4.3")
+    implementation("androidx.room:room-ktx:2.4.3")
+    kapt("androidx.room:room-compiler:2.4.3")
 }
