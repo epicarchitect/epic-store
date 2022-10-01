@@ -4,8 +4,8 @@ class EpicStore {
 
     private val map = mutableMapOf<Any?, Any?>()
     var isClearNeeded: () -> Boolean = { false }
-    var doBeforeClear: (key: Any?, value: Any?) -> Unit = { _, _ -> }
-    var doAfterClear: () -> Unit = { }
+    var doBeforeClear: ((key: Any?, value: Any?) -> Unit)? = null
+    var doAfterClear: (() -> Unit)? = null
 
     fun clearIfNeeded() {
         map.values.forEach {
@@ -15,9 +15,9 @@ class EpicStore {
         }
 
         if (isClearNeeded()) {
-            map.forEach { doBeforeClear(it.key, it.value) }
+            map.forEach { doBeforeClear?.invoke(it.key, it.value) }
             map.clear()
-            doAfterClear()
+            doAfterClear?.invoke()
         }
     }
 

@@ -1,6 +1,5 @@
 package epicarchitect.epicstore.sample.ui
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,8 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyItemScope
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Checkbox
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.FloatingActionButton
@@ -29,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import epicarchitect.epicstore.compose.epicStoreItems
 import epicarchitect.epicstore.compose.rememberEpicStoreEntry
 import epicarchitect.epicstore.sample.di.DI
 import epicarchitect.epicstore.sample.feature.TodoFeature
@@ -63,7 +61,7 @@ fun TodoListScreen(
                         .fillMaxSize()
                         .padding(it)
                 ) {
-                    items(state.todoIds) { id ->
+                    epicStoreItems(state.todoIds) { id ->
                         TodoItem(
                             todoId = id,
                             onClick = { onTaskClick(id) }
@@ -83,9 +81,8 @@ fun TodoListScreen(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun LazyItemScope.TodoItem(
+private fun TodoItem(
     todoId: Int,
     onClick: () -> Unit
 ) {
@@ -95,42 +92,23 @@ private fun LazyItemScope.TodoItem(
 
     when (val state = todoState) {
         is TodoFeature.State.Loaded -> {
-            val todo = state.todo
             val toggleCompletionFeature = rememberEpicStoreEntry {
-                DI.createTodoToggleCompletionFeature(todoId)
+                DI.createTodoToggleCompletionFeature(state.todo.id)
             }
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable(onClick = onClick)
-                    .padding(8.dp)
-                    .animateItemPlacement(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Checkbox(
-                    checked = todo.completed,
-                    onCheckedChange = {
-                        toggleCompletionFeature.toggleCompletion()
-                    }
-                )
-
-                Column {
-                    Text(
-                        text = todo.title,
-                        style = MaterialTheme.typography.h6
-                    )
-
-                    Text(
-                        text = todo.content,
-                        style = MaterialTheme.typography.body1
-                    )
+            TodoLoadedContent(
+                state = state,
+                onClick = onClick,
+                onCompletedChanged = {
+                    toggleCompletionFeature.toggleCompletion()
                 }
-            }
+            )
         }
         is TodoFeature.State.Loading -> {
             LinearProgressIndicator(
-                modifier = Modifier.fillMaxWidth().height(44.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(44.dp)
             )
         }
         is TodoFeature.State.NotFound -> {
@@ -140,6 +118,38 @@ private fun LazyItemScope.TodoItem(
             ) {
                 Text("Not found")
             }
+        }
+    }
+}
+
+@Composable
+private fun TodoLoadedContent(
+    state: TodoFeature.State.Loaded,
+    onClick: () -> Unit,
+    onCompletedChanged: (Boolean) -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+            .padding(8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Checkbox(
+            checked = state.todo.completed,
+            onCheckedChange = onCompletedChanged
+        )
+
+        Column {
+            Text(
+                text = state.todo.title,
+                style = MaterialTheme.typography.h6
+            )
+
+            Text(
+                text = state.todo.content,
+                style = MaterialTheme.typography.body1
+            )
         }
     }
 }

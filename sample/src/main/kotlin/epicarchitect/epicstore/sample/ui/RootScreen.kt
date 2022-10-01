@@ -1,6 +1,5 @@
 package epicarchitect.epicstore.sample.ui
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
 import androidx.navigation.navArgument

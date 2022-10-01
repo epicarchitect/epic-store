@@ -86,6 +86,6 @@ class FakeTodoRepository : TodoRepository {
     }
 
     private suspend fun hardWork() {
-        delay((500L..3000L).random())
+        delay((100L..1000L).random())
     }
 }

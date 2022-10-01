@@ -22,8 +22,8 @@ fun RootEpicStore(content: @Composable () -> Unit) {
 fun EpicStore(
     key: Any = rememberSaveable(init = UUID::randomUUID),
     clearWhen: () -> Boolean = { false },
-    doBeforeClear: (key: Any?, value: Any?) -> Unit = { _, _ -> },
-    doAfterClear: () -> Unit = { },
+    doBeforeClear: ((key: Any?, value: Any?) -> Unit)? = null,
+    doAfterClear: (() -> Unit)? = null,
     content: @Composable () -> Unit
 ) {
     val epicStore = LocalEpicStore.current
@@ -32,7 +32,7 @@ fun EpicStore(
     }
 
     CompositionLocalProvider(
-        LocalEpicStore provides rememberEpicStoreEntry(keys = emptyArray(), key, ::EpicStore).apply {
+        LocalEpicStore provides rememberEpicStoreEntry(key, entry = ::EpicStore).apply {
             this.isClearNeeded = clearWhen
             this.doBeforeClear = doBeforeClear
             this.doAfterClear = doAfterClear
@@ -43,10 +43,9 @@ fun EpicStore(
 
 @Composable
 inline fun <reified T> rememberEpicStoreEntry(
-    vararg keys: Any? = emptyArray(),
-    epicStoreKey: Any = rememberSaveable(init = UUID::randomUUID),
+    key: Any = rememberSaveable(init = UUID::randomUUID),
     noinline entry: @DisallowComposableCalls () -> T,
 ): T {
     val epicStore = LocalEpicStore.current
-    return remember(keys) { epicStore.getOrSet(epicStoreKey, entry) }
+    return remember(key) { epicStore.getOrSet(key, entry) }
 }
