@@ -1,22 +1,13 @@
 # Epic Store
 Android library for storing objects. Can be alternative to ViewModelStore.
 
-### Add the JitPack repository to your root build file
-
-```Kotlin
-allprojects {
-    repositories {
-        maven("https://jitpack.io")
-    }
-}
-```
 
 ### Add the dependency
 
 ```Kotlin
 dependencies {
-    implementation("com.github.epicarchitect.epic-store:core:1.0.6")
-    implementation("com.github.epicarchitect.epic-store:compose:1.0.6") // contains core api
-    implementation("com.github.epicarchitect.epic-store:google-navigation-compose:1.0.6") // contains core, compose and google navigation api
+    implementation("io.github.epicarchitect:epicstore-core:1.0.6")
+    implementation("io.github.epicarchitect:epicstore-compose:1.0.6") // contains core api
+    implementation("io.github.epicarchitect:epicstore-google-navigation-compose:1.0.6") // contains core, compose and google navigation api
 }
 ```
